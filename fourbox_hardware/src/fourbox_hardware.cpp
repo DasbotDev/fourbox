@@ -11,7 +11,7 @@ namespace fourbox_hardware {
         // Переменная для хранения параметров из URDF
         hardware_info_ = info;
 
-        // Читаем ВСЕ параметры из URDF.
+        // Читаем параметры из URDF.
         serial_port_ = hardware_info_.hardware_parameters.at("serial_port");
         baudrate_ = std::stoi(hardware_info_.hardware_parameters.at("baudrate"));
         wheel_radius_ = std::stod(hardware_info_.hardware_parameters.at("wheel_radius"));
@@ -84,7 +84,8 @@ namespace fourbox_hardware {
 
         // RCLCPP_INFO(rclcpp::get_logger("FourboxHardware"), "Получено из порта: %s",response.c_str());
 
-        if (response.empty()) {  // ← ПРОПУСК ПУСТЫХ!
+        // Проверяем содержание сообщения и парсим его в случае получения правильного.
+        if (response.empty()) {
             return hardware_interface::return_type::OK;
         }
         if (response.find("e,") != 0) {
@@ -104,15 +105,12 @@ namespace fourbox_hardware {
                 previous_encoders_value_[counter] = int_value;
                 counter++;
             }
-        }
-
-           
+        } 
         return hardware_interface::return_type::OK;    
     }
 
     hardware_interface::return_type FourboxHardware::write(const rclcpp::Time &, const rclcpp::Duration &) {
-    
-        
+        // Формирование сообщения для отправки
         std::string cmd = "v,";
         for(size_t i = 0; i < JOINTS_COUNT_; i++) {
             double rad_s = cmd_velocities_[i];
@@ -121,12 +119,12 @@ namespace fourbox_hardware {
             cmd += std::to_string(rpm_int);
             if (i < JOINTS_COUNT_ - 1) cmd += ",";
         }
-
         cmd += "\n";
+        // Отправка сообщения в последовательный порт
         this->serial_write (cmd);
 
         // RCLCPP_INFO(rclcpp::get_logger("FourboxHardware"), "Поступило для управления: %s",cmd.c_str());
-    
+
         return hardware_interface::return_type::OK;
     }
 
@@ -158,7 +156,6 @@ namespace fourbox_hardware {
         tcsetattr(serial_fd_, TCSANOW, &tty);
         tcflush(serial_fd_, TCIOFLUSH);
 
-        // Возвращает "true", если все удалось.
         return true;
     }
 
@@ -169,7 +166,7 @@ namespace fourbox_hardware {
     bool FourboxHardware::serial_write(const std::string& data) {
         if (serial_fd_ < 0) return false;
         ssize_t bytes = ::write(serial_fd_, data.c_str(), data.length());
-        tcdrain(serial_fd_);  // ✅ Ждём полной отправки
+        tcdrain(serial_fd_);
         return bytes > 0;
     }
 

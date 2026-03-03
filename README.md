@@ -145,8 +145,8 @@ ros2 launch fourbox_* *.launch.py rviz:=false world:=empty
 
 ## 👥 Контакты
 
-- **Issues**: GitHub Issues
-- **Discord/Telegram**: [ссылка]
+- GitHub: [Issues](https://github.com/DasbotDev/fourbox/issues)
+- Telegram: [@dasbot_support](https://t.me/dasbot_support)
 
 ## 📄 Лицензия
 

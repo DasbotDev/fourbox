@@ -107,3 +107,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+## Контакты
+
+- GitHub: [Issues](https://github.com/DasbotDev/fourbox/issues)
+- Telegram: [@dasbot_support](https://t.me/dasbot_support)
