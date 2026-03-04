@@ -7,9 +7,13 @@ from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessStart
 
 def generate_launch_description():
+    # Аргументы запуска
+
     # Пути к пакетам
     pkg_hardware_name = 'fourbox_hardware'
     pkg_description_name = 'fourbox_description'
+    
+    
     
     pkg_hardware_path = FindPackageShare(pkg_hardware_name).find(pkg_hardware_name)
     pkg_description_path = PathJoinSubstitution([
